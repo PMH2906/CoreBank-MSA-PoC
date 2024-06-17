@@ -1,20 +1,20 @@
 package org.tmax.account.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.fastcampuspay.membership.adapter.out.persistence.MembershipJpaEntity;
-import org.fastcampuspay.membership.adapter.out.persistence.MembershipMapper;
-import org.fastcampuspay.membership.application.port.in.RegisterMembershipCommand;
-import org.fastcampuspay.membership.application.port.in.RegisterMembershipUseCase;
-import org.fastcampuspay.membership.application.port.out.RegisterMembershipPort;
-import org.fastcampuspay.membership.common.UseCase;
-import org.fastcampuspay.membership.domain.Membership;
+import org.springframework.transaction.annotation.Transactional;
+import org.tmax.account.adapter.out.persistence.MembershipJpaEntity;
+import org.tmax.account.adapter.out.persistence.MembershipMapper;
+import org.tmax.account.application.port.in.RegisterMembershipCommand;
+import org.tmax.account.application.port.in.RegisterMembershipUseCase;
+import org.tmax.account.application.port.out.RegisterMembershipPort;
+import org.tmax.account.common.UseCase;
+import org.tmax.account.domain.Membership;
 
-import javax.transaction.Transactional;
 
 @UseCase
 @RequiredArgsConstructor
 @Transactional
-public class RegisterMembershipService implements RegisterMembershipUseCase{
+public class RegisterMembershipService implements RegisterMembershipUseCase {
 
     private final RegisterMembershipPort registerMembershipPort;
 

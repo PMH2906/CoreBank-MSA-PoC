@@ -1,18 +1,16 @@
 package org.tmax.account.application.port.in;
 
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.fastcampuspay.membership.common.SelfValidating;
-
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RegisterMembershipCommand extends SelfValidating<RegisterMembershipCommand> {
+public class RegisterMembershipCommand {
 
     @NotNull
     private final String name;
@@ -37,6 +35,5 @@ public class RegisterMembershipCommand extends SelfValidating<RegisterMembership
         this.isValid = isValid;
         this.isCorp = isCorp;
 
-        this.validateSelf();
     }
 }

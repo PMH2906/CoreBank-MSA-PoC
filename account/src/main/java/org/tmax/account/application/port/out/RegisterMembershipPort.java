@@ -1,8 +1,8 @@
 package org.tmax.account.application.port.out;
 
-import org.fastcampuspay.membership.adapter.out.persistence.MembershipJpaEntity;
-import org.fastcampuspay.membership.domain.Membership;
 
+import org.tmax.account.adapter.out.persistence.MembershipJpaEntity;
+import org.tmax.account.domain.Membership;
 
 public interface RegisterMembershipPort {
 

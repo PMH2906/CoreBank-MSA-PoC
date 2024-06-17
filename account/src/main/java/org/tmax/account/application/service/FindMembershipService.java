@@ -1,13 +1,13 @@
 package org.tmax.account.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.fastcampuspay.membership.adapter.out.persistence.MembershipJpaEntity;
-import org.fastcampuspay.membership.adapter.out.persistence.MembershipMapper;
-import org.fastcampuspay.membership.application.port.in.FindMembershipCommand;
-import org.fastcampuspay.membership.application.port.in.FindMembershipUseCase;
-import org.fastcampuspay.membership.application.port.out.FindMembershipPort;
-import org.fastcampuspay.membership.common.UseCase;
-import org.fastcampuspay.membership.domain.Membership;
+import org.tmax.account.adapter.out.persistence.MembershipJpaEntity;
+import org.tmax.account.adapter.out.persistence.MembershipMapper;
+import org.tmax.account.application.port.in.FindMembershipCommand;
+import org.tmax.account.application.port.in.FindMembershipUseCase;
+import org.tmax.account.application.port.out.FindMembershipPort;
+import org.tmax.account.common.UseCase;
+import org.tmax.account.domain.Membership;
 
 @UseCase
 @RequiredArgsConstructor
