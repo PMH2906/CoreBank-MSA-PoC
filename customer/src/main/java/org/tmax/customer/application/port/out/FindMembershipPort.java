@@ -1,7 +1,7 @@
 package org.tmax.customer.application.port.out;
 
-import org.fastcampuspay.membership.adapter.out.persistence.MembershipJpaEntity;
-import org.fastcampuspay.membership.domain.Membership;
+import org.tmax.customer.adapter.out.persistence.MembershipJpaEntity;
+import org.tmax.customer.domain.Membership;
 
 import java.util.Optional;
 

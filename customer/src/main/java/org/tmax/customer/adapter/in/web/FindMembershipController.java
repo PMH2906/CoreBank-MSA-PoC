@@ -1,14 +1,14 @@
 package org.tmax.customer.adapter.in.web;
 
 import lombok.RequiredArgsConstructor;
-import org.fastcampuspay.membership.application.port.in.FindMembershipCommand;
-import org.fastcampuspay.membership.application.port.in.FindMembershipUseCase;
-import org.fastcampuspay.membership.common.WebAdapter;
-import org.fastcampuspay.membership.domain.Membership;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.tmax.customer.application.port.in.FindMembershipCommand;
+import org.tmax.customer.application.port.in.FindMembershipUseCase;
+import org.tmax.customer.common.WebAdapter;
+import org.tmax.customer.domain.Membership;
 
 @WebAdapter
 @RestController

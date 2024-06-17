@@ -1,6 +1,7 @@
 package org.tmax.customer.application.port.in;
 
-import org.fastcampuspay.membership.domain.Membership;
+
+import org.tmax.customer.domain.Membership;
 
 public interface RegisterMembershipUseCase {
 

@@ -1,7 +1,7 @@
 package org.tmax.customer.adapter.out.persistence;
 
-import org.fastcampuspay.membership.domain.Membership;
 import org.springframework.stereotype.Component;
+import org.tmax.customer.domain.Membership;
 
 @Component
 public class MembershipMapper {

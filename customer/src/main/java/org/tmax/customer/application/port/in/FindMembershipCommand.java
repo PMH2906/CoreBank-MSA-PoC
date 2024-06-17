@@ -1,22 +1,20 @@
 package org.tmax.customer.application.port.in;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.fastcampuspay.membership.common.SelfValidating;
 
-import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class FindMembershipCommand extends SelfValidating<FindMembershipCommand> {
+public class FindMembershipCommand  {
 
     @NotNull
     private Long membershipId;
 
     public FindMembershipCommand(Long membershipId) {
         this.membershipId = membershipId;
-        this.validateSelf();
     }
 }

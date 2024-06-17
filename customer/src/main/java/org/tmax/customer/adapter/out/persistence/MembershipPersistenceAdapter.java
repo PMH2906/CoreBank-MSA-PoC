@@ -1,10 +1,10 @@
 package org.tmax.customer.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
-import org.fastcampuspay.membership.application.port.out.FindMembershipPort;
-import org.fastcampuspay.membership.application.port.out.RegisterMembershipPort;
-import org.fastcampuspay.membership.common.PersistenceAdapter;
-import org.fastcampuspay.membership.domain.Membership;
+import org.tmax.customer.application.port.out.FindMembershipPort;
+import org.tmax.customer.application.port.out.RegisterMembershipPort;
+import org.tmax.customer.common.PersistenceAdapter;
+import org.tmax.customer.domain.Membership;
 
 import java.util.Optional;
 
