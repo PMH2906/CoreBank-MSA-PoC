@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: customer
+            uri: http://localhost:8081/
+            predicates:
+              - Path=/customer
+          - id: account
+            uri: http://localhost:8082/
+            predicates:
+              - Path=/account
+          - id: transaction
+            uri: http://localhost:8082/
+            predicates:
+              - Path=/transaction

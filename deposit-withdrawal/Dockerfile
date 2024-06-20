@@ -13,7 +13,7 @@ RUN ./gradlew --version
 
 # Copy project files and build
 COPY . /app
-RUN ./gradlew build
+RUN ./gradlew bootJar -x test
 
 # Stage 2: Use a smaller OpenJDK runtime image for the final image
 FROM openjdk:17-jdk-slim

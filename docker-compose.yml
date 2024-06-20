@@ -1,8 +1,19 @@
-version: '2'
+version: '3.8'
 
 services:
 
+  gateway:
+    container_name: 'gateway'
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - corebank-network
+
   customer:
+    container_name: 'customer'
     build:
       context: ./customer
       dockerfile: Dockerfile
@@ -12,6 +23,7 @@ services:
       - corebank-network
 
   account:
+    container_name: 'account'
     build:
       context: ./account
       dockerfile: Dockerfile
@@ -22,6 +34,7 @@ services:
 
 
   deposit-withdrawal:
+    container_name: 'deposit-withdrawal'
     build:
       context: ./deposit-withdrawal
       dockerfile: Dockerfile
@@ -30,22 +43,90 @@ services:
     networks:
       - corebank-network
 
-  zookeeper:
-    image: wurstmeister/zookeeper
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
 
-  kafka:
-    image: wurstmeister/kafka:2.12-2.5.0
-    container_name: kafka
+  kafka0:
+    image: 'bitnami/kafka:3.6.1'
+    container_name: 'kafka0'
     ports:
-      - "9092:9092"
+      - '10000:9094'
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka0:9093,1@kafka1:9093,2@kafka2:9093
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka0:9092,EXTERNAL://127.0.0.1:10000
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      # Clustering
+      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=3
+      - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=3
+      - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
+      - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=2
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "kafka_data0:/bitnami/kafka"
+    networks:
+      - shared_network
+
+
+  kafka1:
+    image: 'bitnami/kafka:3.6.1'
+    container_name: 'kafka1'
+    ports:
+      - '10001:9094'
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka0:9093,1@kafka1:9093,2@kafka2:9093
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka1:9092,EXTERNAL://127.0.0.1:10001
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      # Clustering
+      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=3
+      - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=3
+      - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
+      - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=2
+    volumes:
+      - "kafka_data1:/bitnami/kafka"
+    networks:
+      - shared_network
+
+
+  kafka2:
+    image: 'bitnami/kafka:3.6.1'
+    container_name: 'kafka2'
+    ports:
+      - '10002:9094'
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=2
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka0:9093,1@kafka1:9093,2@kafka2:9093
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka2:9092,EXTERNAL://127.0.0.1:10002
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      # Clustering
+      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=3
+      - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=3
+      - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
+      - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=2
+    volumes:
+      - "kafka_data2:/bitnami/kafka"
+    networks:
+      - shared_network
+
 
   mysql-customer:
     image: mysql:latest
@@ -80,6 +161,19 @@ services:
     volumes:
       - /var/lib/docker/volumes/mysql-deposit-withdrawal:/var/lib/mysql
 
+
 networks:
   corebank-network:
     driver: bridge
+  shared_network:
+    name: my_network
+    driver: bridge
+
+
+volumes:
+  kafka_data0:
+    driver: local
+  kafka_data1:
+    driver: local
+  kafka_data2:
+    driver: local
