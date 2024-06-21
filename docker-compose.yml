@@ -12,13 +12,23 @@ services:
     networks:
       - corebank-network
 
+  orchestrator:
+    container_name: 'orchestrator'
+    build:
+      context: ./orchestrator
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    networks:
+      - corebank-network
+
   customer:
     container_name: 'customer'
     build:
       context: ./customer
       dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "8082:8080"
     networks:
       - corebank-network
 
@@ -28,7 +38,7 @@ services:
       context: ./account
       dockerfile: Dockerfile
     ports:
-      - "8082:8080"
+      - "8083:8080"
     networks:
       - corebank-network
 
@@ -39,7 +49,7 @@ services:
       context: ./deposit-withdrawal
       dockerfile: Dockerfile
     ports:
-      - "8083:8080"
+      - "8084:8080"
     networks:
       - corebank-network
 
