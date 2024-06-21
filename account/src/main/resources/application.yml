@@ -3,7 +3,7 @@ spring:
     name: account
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:10000, localhost:10001, localhost:10002
     consumer:
       group-id: test-group
       auto-offset-reset: earliest

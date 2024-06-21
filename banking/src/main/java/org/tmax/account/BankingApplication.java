@@ -1,13 +1,13 @@
-package org.tmax.depositwithdrawal;
+package org.tmax.account;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DepositWithdrawalApplication {
+public class BankingApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DepositWithdrawalApplication.class, args);
+        SpringApplication.run(BankingApplication.class, args);
     }
 
 }

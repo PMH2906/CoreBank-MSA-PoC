@@ -1,5 +1,4 @@
-package org.tmax.depositwithdrawal;
-
+package org.tmax.account;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-
     public OpenAPI openAPI() {
 
         return new OpenAPI()
@@ -22,9 +20,8 @@ public class SwaggerConfig {
     }
 
     private Info apiInfo() {
-
         return new Info()
-                .title("Deposit Withdrawal Swagger")
+                .title("Account Swagger")
                 .version("1.0.0");
 
     }

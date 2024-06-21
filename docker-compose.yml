@@ -43,10 +43,10 @@ services:
       - corebank-network
 
 
-  deposit-withdrawal:
-    container_name: 'deposit-withdrawal'
+  banking:
+    container_name: 'banking'
     build:
-      context: ./deposit-withdrawal
+      context: ./banking
       dockerfile: Dockerfile
     ports:
       - "8084:8080"
@@ -137,12 +137,22 @@ services:
     networks:
       - shared_network
 
+  mysql-orchestrator:
+    image: mysql:latest
+    container_name: mysql-orchestrator
+    ports:
+      - "3320:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: orchestrator
+    volumes:
+      - /var/lib/docker/volumes/mysql-orchestrator:/var/lib/mysql
 
   mysql-customer:
     image: mysql:latest
     container_name: mysql-customer
     ports:
-      - "3320:3306"
+      - "3321:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: customer
@@ -153,23 +163,23 @@ services:
     image: mysql:latest
     container_name: mysql-account
     ports:
-      - "3321:3306"
+      - "3322:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: account
     volumes:
       - /var/lib/docker/volumes/mysql-account:/var/lib/mysql
 
-  mysql-deposit-withdrawal:
+  mysql-banking:
     image: mysql:latest
-    container_name: mysql-deposit-withdrawal
+    container_name: mysql-banking
     ports:
-      - "3322:3306"
+      - "3323:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: deposit-withdrawal
+      MYSQL_DATABASE: banking
     volumes:
-      - /var/lib/docker/volumes/mysql-deposit-withdrawal:/var/lib/mysql
+      - /var/lib/docker/volumes/mysql-banking:/var/lib/mysql
 
 
 networks:

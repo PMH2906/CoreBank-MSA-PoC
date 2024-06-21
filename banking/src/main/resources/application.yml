@@ -1,9 +1,9 @@
 spring:
   application:
-    name: deposit-withdrawal
+    name: banking
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:10000, localhost:10001, localhost:10002
     consumer:
       group-id: test-group
       auto-offset-reset: earliest
@@ -14,16 +14,15 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
   datasource:
-    url: jdbc:mysql://localhost:3322/deposit-withdrawal
+    url: jdbc:mysql://localhost:3323/banking
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
-
 server:
-  port: 8083
+  port: 8082
