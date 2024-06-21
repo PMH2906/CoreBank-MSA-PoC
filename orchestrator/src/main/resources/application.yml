@@ -1,3 +1,14 @@
 spring:
   kafka:
     bootstrap-servers: localhost:10000, localhost:10001, localhost:10002
+
+  datasource:
+    url: jdbc:mysql://localhost:3320/orchestrator
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect

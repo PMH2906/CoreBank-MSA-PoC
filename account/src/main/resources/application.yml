@@ -14,7 +14,7 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
   datasource:
-    url: jdbc:mysql://localhost:3321/account
+    url: jdbc:mysql://localhost:3322/account
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,6 +23,3 @@ spring:
       ddl-auto: create
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
-
-server:
-  port: 8082
