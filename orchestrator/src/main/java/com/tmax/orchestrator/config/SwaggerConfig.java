@@ -1,4 +1,4 @@
-package org.tmax.customer;
+package com.tmax.orchestrator.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -12,18 +12,15 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
-
         return new OpenAPI()
                 .components(new Components())
                 .info(apiInfo());
-
     }
 
     private Info apiInfo() {
         return new Info()
-                .title("Customer Swagger")
+                .title("Orchestrator Swagger")
                 .version("1.0.0");
-
     }
 
 }
