@@ -77,10 +77,9 @@ services:
       - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
       - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=2
     volumes:
-      - "kafka_data0:/bitnami/kafka"
+      - kafka-data0:/bitnami/kafka
     networks:
-      - shared_network
-
+      - corebank-network
 
   kafka1:
     image: 'bitnami/kafka:latest'
@@ -105,10 +104,9 @@ services:
       - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
       - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=2
     volumes:
-      - "kafka_data1:/bitnami/kafka"
+      - kafka-data1:/bitnami/kafka
     networks:
-      - shared_network
-
+      - corebank-network
 
   kafka2:
     image: 'bitnami/kafka:latest'
@@ -133,9 +131,9 @@ services:
       - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
       - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=2
     volumes:
-      - "kafka_data2:/bitnami/kafka"
+      - kafka-data2:/bitnami/kafka
     networks:
-      - shared_network
+      - corebank-network
 
   KafkaWebUiService:
     image: provectuslabs/kafka-ui:latest
@@ -151,9 +149,7 @@ services:
       - KAFKA_CLUSTERS_0_AUDIT_CONSOLEAUDITENABLED=true
       #- KAFKA_CLUSTERS_0_METRICS_PORT=9999
     networks:
-      - shared_network
-
-
+      - corebank-network
 
   mysql-orchestrator:
     image: mysql:latest
@@ -163,10 +159,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: orchestrator
+      MYSQL_USER: debezium
+      MYSQL_PASSWORD: debezium
     volumes:
-      - /var/lib/docker/volumes/mysql-orchestrator:/var/lib/mysql
+      - mysql-orchestrator-data:/var/lib/mysql
     networks:
-      - shared_network
+      - corebank-network
 
   mysql-customer:
     image: mysql:latest
@@ -176,10 +174,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: customer
+      MYSQL_USER: debezium
+      MYSQL_PASSWORD: debezium
     volumes:
-      - /var/lib/docker/volumes/mysql-customer:/var/lib/mysql
+      - mysql-customer-data:/var/lib/mysql
     networks:
-      - shared_network
+      - corebank-network
 
   mysql-account:
     image: mysql:latest
@@ -189,10 +189,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: account
+      MYSQL_USER: debezium
+      MYSQL_PASSWORD: debezium
     volumes:
-      - /var/lib/docker/volumes/mysql-account:/var/lib/mysql
+      - mysql-account-data:/var/lib/mysql
     networks:
-      - shared_network
+      - corebank-network
 
   mysql-banking:
     image: mysql:latest
@@ -202,13 +204,15 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: banking
+      MYSQL_USER: debezium
+      MYSQL_PASSWORD: debezium
     volumes:
-      - /var/lib/docker/volumes/mysql-banking:/var/lib/mysql
+      - mysql-banking-data:/var/lib/mysql
     networks:
-      - shared_network
+      - corebank-network
 
   debezium:
-    image: quay.io/debezium/connect:latest
+    image: debezium/connect:latest
     container_name: debezium
     ports:
       - "8090:8083"
@@ -233,18 +237,24 @@ services:
       - kafka1
       - kafka2
     networks:
-      - shared_network
+      - corebank-network
 
 networks:
   corebank-network:
     driver: bridge
-  shared_network:
-    driver: bridge
 
 volumes:
-  kafka_data0:
+  kafka-data0:
     driver: local
-  kafka_data1:
+  kafka-data1:
     driver: local
-  kafka_data2:
+  kafka-data2:
+    driver: local
+  mysql-orchestrator-data:
+    driver: local
+  mysql-customer-data:
+    driver: local
+  mysql-account-data:
+    driver: local
+  mysql-banking-data:
     driver: local
