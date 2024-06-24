@@ -55,7 +55,7 @@ services:
 
 
   kafka0:
-    image: 'bitnami/kafka:3.6.1'
+    image: 'bitnami/kafka:latest'
     container_name: 'kafka0'
     ports:
       - '10000:9094'
@@ -83,7 +83,7 @@ services:
 
 
   kafka1:
-    image: 'bitnami/kafka:3.6.1'
+    image: 'bitnami/kafka:latest'
     container_name: 'kafka1'
     ports:
       - '10001:9094'
@@ -111,7 +111,7 @@ services:
 
 
   kafka2:
-    image: 'bitnami/kafka:3.6.1'
+    image: 'bitnami/kafka:latest'
     container_name: 'kafka2'
     ports:
       - '10002:9094'
@@ -137,6 +137,24 @@ services:
     networks:
       - shared_network
 
+  KafkaWebUiService:
+    image: provectuslabs/kafka-ui:latest
+    restart: unless-stopped
+    container_name: KafkaWebUiContainer
+    ports:
+      - '8085:8080'
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=Local-Kraft-Cluster
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka0:9092,kafka1:9092,kafka2:9092
+      - DYNAMIC_CONFIG_ENABLED=true
+      - KAFKA_CLUSTERS_0_AUDIT_TOPICAUDITENABLED=true
+      - KAFKA_CLUSTERS_0_AUDIT_CONSOLEAUDITENABLED=true
+      #- KAFKA_CLUSTERS_0_METRICS_PORT=9999
+    networks:
+      - shared_network
+
+
+
   mysql-orchestrator:
     image: mysql:latest
     container_name: mysql-orchestrator
@@ -147,6 +165,8 @@ services:
       MYSQL_DATABASE: orchestrator
     volumes:
       - /var/lib/docker/volumes/mysql-orchestrator:/var/lib/mysql
+    networks:
+      - shared_network
 
   mysql-customer:
     image: mysql:latest
@@ -158,6 +178,8 @@ services:
       MYSQL_DATABASE: customer
     volumes:
       - /var/lib/docker/volumes/mysql-customer:/var/lib/mysql
+    networks:
+      - shared_network
 
   mysql-account:
     image: mysql:latest
@@ -169,6 +191,8 @@ services:
       MYSQL_DATABASE: account
     volumes:
       - /var/lib/docker/volumes/mysql-account:/var/lib/mysql
+    networks:
+      - shared_network
 
   mysql-banking:
     image: mysql:latest
@@ -180,15 +204,42 @@ services:
       MYSQL_DATABASE: banking
     volumes:
       - /var/lib/docker/volumes/mysql-banking:/var/lib/mysql
+    networks:
+      - shared_network
 
+  debezium:
+    image: quay.io/debezium/connect:latest
+    container_name: debezium
+    ports:
+      - "8090:8083"
+    environment:
+      BOOTSTRAP_SERVERS: kafka0:9092,kafka1:9092,kafka2:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: connect-configs
+      OFFSET_STORAGE_TOPIC: connect-offsets
+      STATUS_STORAGE_TOPIC: connect-status
+    #      CONNECT_KEY_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
+    #      CONNECT_VALUE_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
+    #      CONNECT_INTERNAL_KEY_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
+    #      CONNECT_INTERNAL_VALUE_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
+    #      CONNECT_REST_ADVERTISED_HOST_NAME: 'debezium'
+    #      CONNECT_PLUGIN_PATH: '/kafka/connect/debezium-connector-mysql'
+    depends_on:
+      - mysql-orchestrator
+      - mysql-customer
+      - mysql-account
+      - mysql-banking
+      - kafka0
+      - kafka1
+      - kafka2
+    networks:
+      - shared_network
 
 networks:
   corebank-network:
     driver: bridge
   shared_network:
-    name: my_network
     driver: bridge
-
 
 volumes:
   kafka_data0:
