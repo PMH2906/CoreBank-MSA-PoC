@@ -1,9 +1,9 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:10000, localhost:10001, localhost:10002
+    bootstrap-servers: kafka0:9092,kafka1:9092,kafka2:9092
 
   datasource:
-    url: jdbc:mysql://localhost:3320/orchestrator
+    url: jdbc:mysql://mysql-orchestrator:3306/orchestrator
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -42,7 +42,6 @@ services:
     networks:
       - corebank-network
 
-
   banking:
     container_name: 'banking'
     build:
@@ -53,9 +52,8 @@ services:
     networks:
       - corebank-network
 
-
   kafka0:
-    image: 'bitnami/kafka:latest'
+    image: bitnami/kafka:latest
     container_name: 'kafka0'
     ports:
       - '10000:9094'
@@ -82,7 +80,7 @@ services:
       - corebank-network
 
   kafka1:
-    image: 'bitnami/kafka:latest'
+    image: bitnami/kafka:latest
     container_name: 'kafka1'
     ports:
       - '10001:9094'
@@ -109,7 +107,7 @@ services:
       - corebank-network
 
   kafka2:
-    image: 'bitnami/kafka:latest'
+    image: bitnami/kafka:latest
     container_name: 'kafka2'
     ports:
       - '10002:9094'
@@ -152,7 +150,7 @@ services:
       - corebank-network
 
   mysql-orchestrator:
-    image: mysql:latest
+    image: mysql:8.0.37
     container_name: mysql-orchestrator
     ports:
       - "3320:3306"
@@ -167,7 +165,7 @@ services:
       - corebank-network
 
   mysql-customer:
-    image: mysql:latest
+    image: mysql:8.0.37
     container_name: mysql-customer
     ports:
       - "3321:3306"
@@ -182,7 +180,7 @@ services:
       - corebank-network
 
   mysql-account:
-    image: mysql:latest
+    image: mysql:8.0.37
     container_name: mysql-account
     ports:
       - "3322:3306"
@@ -197,7 +195,7 @@ services:
       - corebank-network
 
   mysql-banking:
-    image: mysql:latest
+    image: mysql:8.0.37
     container_name: mysql-banking
     ports:
       - "3323:3306"
