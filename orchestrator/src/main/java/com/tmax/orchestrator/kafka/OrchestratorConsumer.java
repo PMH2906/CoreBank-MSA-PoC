@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OrchestratorConsumer {
 
-    @KafkaListener(topics = "ORCHESTRATOR_test_topic5", groupId = "test-group")
+    @KafkaListener(topics = "ORCHESTRATOR_TOPIC", groupId = "orchestator-group")
     public void consume(String message) {
         log.info(message);
     }
