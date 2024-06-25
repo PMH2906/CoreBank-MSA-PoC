@@ -1,10 +1,10 @@
-package org.tmax.account;
+package org.tmax.banking;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AccountApplicationTests {
+class BankingApplicationTests {
 
     @Test
     void contextLoads() {
