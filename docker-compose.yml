@@ -150,7 +150,7 @@ services:
       - corebank-network
 
   mysql-orchestrator:
-    image: mysql:8.0.37
+    image: mysql:8.0.36
     container_name: mysql-orchestrator
     ports:
       - "3320:3306"
@@ -165,7 +165,7 @@ services:
       - corebank-network
 
   mysql-customer:
-    image: mysql:8.0.37
+    image: mysql:8.0.36
     container_name: mysql-customer
     ports:
       - "3321:3306"
@@ -180,7 +180,7 @@ services:
       - corebank-network
 
   mysql-account:
-    image: mysql:8.0.37
+    image: mysql:8.0.36
     container_name: mysql-account
     ports:
       - "3322:3306"
@@ -195,7 +195,7 @@ services:
       - corebank-network
 
   mysql-banking:
-    image: mysql:8.0.37
+    image: mysql:8.0.36
     container_name: mysql-banking
     ports:
       - "3323:3306"
@@ -220,12 +220,6 @@ services:
       CONFIG_STORAGE_TOPIC: connect-configs
       OFFSET_STORAGE_TOPIC: connect-offsets
       STATUS_STORAGE_TOPIC: connect-status
-    #      CONNECT_KEY_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
-    #      CONNECT_VALUE_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
-    #      CONNECT_INTERNAL_KEY_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
-    #      CONNECT_INTERNAL_VALUE_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
-    #      CONNECT_REST_ADVERTISED_HOST_NAME: 'debezium'
-    #      CONNECT_PLUGIN_PATH: '/kafka/connect/debezium-connector-mysql'
     depends_on:
       - mysql-orchestrator
       - mysql-customer
@@ -234,6 +228,10 @@ services:
       - kafka0
       - kafka1
       - kafka2
+    volumes:
+      - debezium-log:/kafka/logs
+      - debezium-config:/kafka/config
+      - debezium-data:/kafka/data
     networks:
       - corebank-network
 
@@ -255,4 +253,10 @@ volumes:
   mysql-account-data:
     driver: local
   mysql-banking-data:
+    driver: local
+  debezium-log:
+    driver: local
+  debezium-config:
+    driver: local
+  debezium-data:
     driver: local
