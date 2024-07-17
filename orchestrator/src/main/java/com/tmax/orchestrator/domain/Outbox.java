@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -38,4 +39,12 @@ public class Outbox {
     @JdbcTypeCode(SqlTypes.JSON)
     private Object payload;
 
+    public Outbox(String aggregateId, String aggregateType, String type, String payload) {
+        this.id = UUID.randomUUID();
+        this.timestamp = LocalDateTime.now();
+        this.aggregateId = aggregateId;
+        this.aggregateType = aggregateType;
+        this.type = type;
+        this.payload=payload;
+    }
 }
