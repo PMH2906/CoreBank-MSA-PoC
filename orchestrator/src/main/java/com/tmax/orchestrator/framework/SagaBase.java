@@ -1,25 +1,25 @@
 package com.tmax.orchestrator.framework;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.tmax.orchestrator.saga.SagaEvent;
-import io.debezium.outbox.quarkus.ExportedEvent;
-import jakarta.enterprise.event.Event;
+import com.tmax.orchestrator.domain.Outbox;
+import com.tmax.orchestrator.domain.SagaState;
 import jakarta.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.context.ApplicationEventPublisher;
 
 public abstract class SagaBase {
 
-    private final Event<ExportedEvent<?,?>> event;
     private final SagaState state;
+    private final EntityManager entityManager;
 
-    protected SagaBase(Event<ExportedEvent<?,?>> event, SagaState state) {
-        this.event = event;
+    protected SagaBase(EntityManager entityManager, SagaState state) {
+        this.entityManager = entityManager;
         this.state = state;
     }
 
     protected abstract SagaStepMessage getStepMessage(String topic);
+
+    protected abstract SagaStepMessage getCompensatingStepMessage(String id);
 
     public final List<String> getStepTopics() {
         return Arrays.asList(getClass().getAnnotation(Saga.class).stepTopics());
@@ -29,24 +29,59 @@ public abstract class SagaBase {
         return state.getPayload();
     }
 
-    public void advance() {
-        String nextStep = getNextStep();
+    protected String getCurrentStep() {
+        return state.getCurrentStep();
+    }
 
-        if (nextStep == null) {
+    public void advance() {
+
+        // 1. 다음 step 토픽 찾기
+        String nextStepTopic = getNextStepTopic();
+
+        if (nextStepTopic == null) {
             state.updateCurrentStep(null);
             return;
         }
 
-       SagaStepMessage stepEvent = getStepMessage(nextStep);
+        // 2. 해당 step 메세지 발행
+       SagaStepMessage stepMessage = getStepMessage(nextStepTopic);
 
-        // 이벤트를 왜 보내주는지 모르겠음..
-        event.fire(new SagaEvent(state.getId(), stepEvent.type, stepEvent.eventType, stepEvent.payload));
+        // 이벤트 발생
+        // event.fire(new SagaEvent(state.getId(), stepEvent.type, stepEvent.eventType, stepEvent.payload));
 
-        state.updateStepStatus(nextStep, SagaStepStatus.STARTED);
-        state.updateCurrentStep(nextStep);
+        // 3. 이벤트 발생 대신 outbox 테이블 저장
+        Outbox outbox = new Outbox(state.getId(), stepMessage.type, stepMessage.eventType, stepMessage.payload);
+        entityManager.persist(outbox);
+
+        // 4. SagaState Update
+        state.updateStepStatus(nextStepTopic, SagaStepStatus.STARTED);
+        state.updateCurrentStep(nextStepTopic);
     }
 
-    private String getNextStep() {
+    public void goBack() {
+        String previousStepTopic = getPreviousStep();
+
+        // 1. 이전 step 토픽 찾기
+        if (previousStepTopic == null) {
+            state.updateCurrentStep(null);
+            return;
+        }
+
+        SagaStepMessage stepMessage = getCompensatingStepMessage(previousStepTopic);
+
+        // 이벤트 발생
+        // event.fire(new SagaEvent(getId(), stepEvent.type, stepEvent.eventType, stepEvent.payload));
+
+        // 3. 이벤트 발생 대신 outbox 테이블 저장
+        Outbox outbox = new Outbox(state.getId(), stepMessage.type, stepMessage.eventType, stepMessage.payload);
+        entityManager.persist(outbox);
+
+        // 4. SagaState Update
+        state.updateStepStatus(previousStepTopic, SagaStepStatus.COMPENSATING);
+        state.updateCurrentStep(previousStepTopic);
+    }
+
+    private String getNextStepTopic() {
         if (getCurrentStep() == null) {
 
             // Saga 클래스에 구현된 @Saga의 tstepIds를 List<String>로 반환
@@ -64,7 +99,13 @@ public abstract class SagaBase {
         return getStepTopics().get(idx + 1);
     }
 
-    protected String getCurrentStep() {
-        return state.getCurrentStep();
+    private String getPreviousStep() {
+        int idx = getStepTopics().indexOf(getCurrentStep());
+
+        if (idx == 0) {
+            return null;
+        }
+
+        return getStepTopics().get(idx - 1);
     }
 }

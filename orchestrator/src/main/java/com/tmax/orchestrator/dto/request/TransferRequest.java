@@ -1,5 +1,6 @@
 package com.tmax.orchestrator.dto.request;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Builder;
@@ -13,13 +14,18 @@ public class TransferRequest {
     String recipientAccountNum;
     Long amount;
 
-    public ObjectNode toSagaPayload() {
+    public JsonNode toSagaPayload() {
 
-        return new ObjectMapper().createObjectNode()
-            .put("depositor-name", this.depositorName)
-            .put("depositor-accountNum", this.depositorAccountNum)
-            .put("recipient-name", this.recipientName)
-            .put("recipient-accountNum", this.recipientAccountNum)
-            .put("amount", this.amount.toString());
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        ObjectNode payload = objectMapper.createObjectNode();
+
+        payload.put("depositor-name", this.depositorName);
+        payload.put("depositor-accountNum", this.depositorAccountNum);
+        payload.put("recipient-name", this.recipientName);
+        payload.put("recipient-accountNum", this.recipientAccountNum);
+        payload.put("amount", this.amount.toString());
+
+        return payload;
     }
 }

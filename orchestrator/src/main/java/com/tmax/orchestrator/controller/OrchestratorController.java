@@ -1,29 +1,29 @@
 package com.tmax.orchestrator.controller;
 
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
-
 import com.tmax.orchestrator.dto.request.TransferRequest;
 import com.tmax.orchestrator.service.TransferService;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@ApplicationScoped
 public class OrchestratorController {
 
     private final TransferService transferService;
 
-    @PostMapping()
+    @PostMapping("/deposit")
     ResponseEntity<?> deposit() {
         return ResponseEntity.accepted()
             .build();
     }
 
-    @PostMapping()
+    @PostMapping("/withdraw")
     ResponseEntity<?> withdraw() {
         return ResponseEntity.accepted()
             .build();
@@ -33,11 +33,6 @@ public class OrchestratorController {
     ResponseEntity<?> transfer(@RequestBody TransferRequest request) {
 
         transferService.transfer(request);
-//        return ResponseEntity.accepted()
-//            .location(fromCurrentRequest().path("/{id}").build(reservation.id().toString()))
-//            .header(HttpHeaders.RETRY_AFTER, "0.5") // seconds
-//            .build();
-        return ResponseEntity.accepted()
-            .build();
+        return ResponseEntity.ok().build();
     }
 }

@@ -21,6 +21,11 @@ services:
       - "8081:8080"
     networks:
       - corebank-network
+    depends_on:
+      - kafka0
+      - kafka1
+      - kafka2
+      - mysql-orchestrator
 
   customer:
     container_name: 'customer'
@@ -31,6 +36,11 @@ services:
       - "8082:8080"
     networks:
       - corebank-network
+    depends_on:
+      - kafka0
+      - kafka1
+      - kafka2
+      - mysql-customer
 
   account:
     container_name: 'account'
@@ -41,6 +51,11 @@ services:
       - "8083:8080"
     networks:
       - corebank-network
+    depends_on:
+      - kafka0
+      - kafka1
+      - kafka2
+      - mysql-account
 
   banking:
     container_name: 'banking'
@@ -51,6 +66,11 @@ services:
       - "8084:8080"
     networks:
       - corebank-network
+    depends_on:
+      - kafka0
+      - kafka1
+      - kafka2
+      - mysql-banking
 
   kafka0:
     image: bitnami/kafka:latest

@@ -39,6 +39,7 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	// 2.1.3.Final
 	implementation 'io.debezium:debezium-quarkus-outbox:2.7.0.Final'
 }
 
