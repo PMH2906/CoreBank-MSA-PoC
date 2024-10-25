@@ -1,6 +1,5 @@
 package com.tmax.orchestrator.framework;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tmax.orchestrator.domain.ConsumedMessage;
@@ -43,10 +42,6 @@ public abstract class SagaBase {
         return state.getCurrentStep();
     }
 
-    public SagaStatus getStatus() {
-        return entityManager.find(SagaState.class, getId()).getSagaStatus();
-    }
-
     /**
      * 이미 처리된 Event 인지 확인하는 메서드입니다.
      *
@@ -67,7 +62,7 @@ public abstract class SagaBase {
     }
 
     /**
-     * kafka에서 메세지를 받은 후 다음 step의 비즈니스 로직을 처리합니다.
+     * kafka에서 메세지를 받은 후 다음 sub step의 비즈니스 로직을 처리합니다.
      * SagaStepStatus.SUCCEEDED면 진행, SagaStepStatus.FAILED 혹은 SagaStepStatus.COMPENSATED면 보상 트랜잭션을 진행합니다.
      *
      * @param type: step을 입력합니다.
@@ -161,7 +156,7 @@ public abstract class SagaBase {
         }
 
         // 2. 해당 step 메세지 발행
-       SagaStepMessage stepMessage = getStepMessage(nextStep);
+        SagaStepMessage stepMessage = getStepMessage(nextStep);
 
         // 이벤트 발생
         // event.fire(new SagaEvent(state.getId(), stepEvent.type, stepEvent.eventType, stepEvent.payload));

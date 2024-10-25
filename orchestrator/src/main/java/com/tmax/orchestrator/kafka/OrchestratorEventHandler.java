@@ -1,6 +1,7 @@
 package com.tmax.orchestrator.kafka;
 
-import com.tmax.orchestrator.event.AccountApprovalEvent;
+import com.tmax.orchestrator.event.AccountApprovalAndUpdateAmountEvent;
+import com.tmax.orchestrator.event.TransferTransactionInsertEvent;
 import com.tmax.orchestrator.framework.SagaManager;
 import com.tmax.orchestrator.saga.TransferSaga;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,24 @@ public class OrchestratorEventHandler {
     private final SagaManager sagaManager;
 
     @Transactional
-    public void onAccountApproval(AccountApprovalEvent event) {
+    public void onAccountApprovalAndAmountUpdateEvent(AccountApprovalAndUpdateAmountEvent event) {
         TransferSaga saga = sagaManager.find(TransferSaga.class, event.sagaId);
 
         if (saga == null) {
             return;
         }
 
-        saga.onAccountApproval(event);
+        saga.onAccountApprovalAndAmountUpdate(event);
+    }
+
+    public void onTransferTransactionInsertEvent(TransferTransactionInsertEvent event) {
+
+        TransferSaga saga = sagaManager.find(TransferSaga.class, event.sagaId);
+
+        if(saga == null) {
+            return;
+        }
+
+        saga.onTransferTransactionInsertEvent(event);
     }
 }
