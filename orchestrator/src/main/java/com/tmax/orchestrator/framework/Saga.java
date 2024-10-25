@@ -11,5 +11,5 @@ public @interface Saga {
 
     String type();
 
-    String[] stepTopics();
+    String[] step();
 }

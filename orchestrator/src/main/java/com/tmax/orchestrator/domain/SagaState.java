@@ -63,4 +63,8 @@ public class SagaState {
         ObjectNode stepStatus = (ObjectNode) this.stepStatus;
         stepStatus.put(nextStep, started.name());
     }
+
+    public void updateSagaStatus(SagaStatus sagaStatus) {
+        this.sagaStatus = sagaStatus;
+    }
 }
