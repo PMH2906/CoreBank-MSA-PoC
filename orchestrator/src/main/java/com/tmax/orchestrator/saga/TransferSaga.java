@@ -6,7 +6,7 @@ import static com.tmax.orchestrator.saga.TransferSaga.TRANSFER_TX_INSERT;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tmax.orchestrator.event.AccountApprovalAndUpdateAmountEvent;
-import com.tmax.orchestrator.event.TransferTransactionInsertEvent;
+import com.tmax.orchestrator.event.TransferTXInsertEvent;
 import com.tmax.orchestrator.framework.Saga;
 import com.tmax.orchestrator.framework.SagaBase;
 import com.tmax.orchestrator.domain.SagaState;
@@ -67,23 +67,23 @@ public class TransferSaga extends SagaBase {
     }
 
     public void onAccountApprovalAndAmountUpdate(AccountApprovalAndUpdateAmountEvent event) {
-        if (alreadyProcessed(event.messageId)) {
+        if (alreadyProcessed(event.eventId)) {
             return;
         }
 
         onStepEvent(ACCOUNT_APPROVAL_AND_AMOUNT_UPDATE, event.status.toStepStatus());
 
-        processed(event.messageId);
+        processed(event.eventId);
     }
 
-    public void onTransferTransactionInsertEvent(TransferTransactionInsertEvent event) {
+    public void onTransferTransactionInsertEvent(TransferTXInsertEvent event) {
 
-        if (alreadyProcessed(event.messageId)) {
+        if (alreadyProcessed(event.eventId)) {
             return;
         }
 
         onStepEvent(ACCOUNT_APPROVAL_AND_AMOUNT_UPDATE, event.status.toStepStatus());
 
-        processed(event.messageId);
+        processed(event.eventId);
     }
 }

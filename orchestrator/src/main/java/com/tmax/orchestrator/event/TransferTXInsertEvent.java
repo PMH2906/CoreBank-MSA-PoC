@@ -4,9 +4,9 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class TransferTransactionInsertEvent {
+public class TransferTXInsertEvent {
 
     public UUID sagaId;
-    public UUID messageId;
-    public TransferTransactionInsertStatus status;
+    public UUID eventId;
+    public TransferTXInsertStatus status;
 }

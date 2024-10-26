@@ -1,5 +1,6 @@
 package org.tmax.banking.domain;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +37,13 @@ public class Outbox {
 
     @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
-    private Object payload;
+    private JsonNode payload;
 
+    public Outbox(UUID aggregateId, String aggregateType, String type, JsonNode payload) {
+        this.timestamp = LocalDateTime.now();
+        this.aggregateId = aggregateId.toString();
+        this.aggregateType = aggregateType;
+        this.type = type;
+        this.payload = payload;
+    }
 }

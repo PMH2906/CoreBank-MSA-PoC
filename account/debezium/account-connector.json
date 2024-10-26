@@ -16,8 +16,11 @@
     "transforms": "outbox",
     "transforms.outbox.type" : "io.debezium.transforms.outbox.EventRouter",
     "transforms.outbox.table.expand.json.payload": "true",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "transforms.outbox.route.topic.replacement" : "ACCOUNT_${routedByValue}",
+    "key.converter.schemas.enable": "false",
+    "value.converter.schemas.enable": "false",
+    "transforms.outbox.route.topic.replacement" : "${routedByValue}.inbox.events",
     "transforms.outbox.table.fields.additional.placement" : "type:header:eventType"
   }
 }

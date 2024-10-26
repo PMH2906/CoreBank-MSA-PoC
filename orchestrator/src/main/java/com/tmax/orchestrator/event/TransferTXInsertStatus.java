@@ -2,7 +2,7 @@ package com.tmax.orchestrator.event;
 
 import com.tmax.orchestrator.framework.SagaStepStatus;
 
-public enum TransferTransactionInsertStatus {
+public enum TransferTXInsertStatus {
 
     APPROVED, REJECTED, CANCELLED;
 

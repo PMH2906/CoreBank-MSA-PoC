@@ -230,7 +230,7 @@ services:
       - corebank-network
 
   debezium:
-    image: debezium/connect:latest
+    image: debezium/connect:2.1
     container_name: debezium
     ports:
       - "8090:8083"

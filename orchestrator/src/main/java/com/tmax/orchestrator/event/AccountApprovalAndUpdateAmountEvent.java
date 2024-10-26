@@ -7,6 +7,6 @@ import lombok.AllArgsConstructor;
 public class AccountApprovalAndUpdateAmountEvent {
 
     public UUID sagaId;
-    public UUID messageId;
+    public UUID eventId;
     public AccountApprovalAndUpdateAmountStatus status;
 }
