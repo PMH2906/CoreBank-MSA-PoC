@@ -52,7 +52,7 @@ public class OrchestratorConsumer {
      * @param eventType : Event type을 입력합니다.
      * @param payload : payload를 입력합니다.
      */
-    @KafkaListener(topics = "transfer.transfer-transaction-insert.outbox.events", groupId = "orchestator-group")
+    @KafkaListener(topics = "transfer.transfer-tx-insert.outbox.events", groupId = "orchestator-group")
     void listen(
         @Header(KafkaHeaders.RECEIVED_KEY) UUID sagaId,
         @Header(EVENT_ID) String messageId,
