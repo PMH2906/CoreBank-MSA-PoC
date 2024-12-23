@@ -1,4 +1,4 @@
-package org.tmax.banking.domain;
+package org.tmax.account.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

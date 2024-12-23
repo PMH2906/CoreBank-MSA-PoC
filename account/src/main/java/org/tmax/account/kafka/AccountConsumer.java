@@ -1,4 +1,4 @@
-package org.tmax.banking.kafka;
+package org.tmax.account.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import org.tmax.banking.domain.Outbox;
+import org.tmax.account.domain.Outbox;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package org.tmax.banking.kafka;
+package org.tmax.account.kafka;
 
 public class TransferPayload {
     public String depositorName;

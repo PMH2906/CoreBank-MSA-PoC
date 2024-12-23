@@ -1,4 +1,4 @@
-package org.tmax.banking.domain;
+package org.tmax.account.domain;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.Column;
