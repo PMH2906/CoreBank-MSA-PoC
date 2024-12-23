@@ -1,4 +1,4 @@
-package org.tmax.banking.kafka;
+package org.tmax.account.kafka;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

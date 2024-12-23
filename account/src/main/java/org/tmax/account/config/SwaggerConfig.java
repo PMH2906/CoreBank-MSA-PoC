@@ -1,4 +1,4 @@
-package org.tmax.banking.config;
+package org.tmax.account.config;
 
 
 import io.swagger.v3.oas.models.OpenAPI;

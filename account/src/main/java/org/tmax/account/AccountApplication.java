@@ -1,4 +1,4 @@
-package org.tmax.banking;
+package org.tmax.account;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
